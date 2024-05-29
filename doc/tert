@@ -1,0 +1,42 @@
+
+# Documentation of Network protocol of "Avant cyclades"
+
+## Clock
+
+the clock is configured to run from left to right
+    
+## BUS structure (```t_cyclade```) to Network protocol.
+
+```
+BUS   Start      Dest      Emet      Lendata      data  
+    |_______|  |______|  |______|  |_________|  |______|
+     1 octets  4 octets  4 octets   4 octets      data
+```
+
+ - `Start`   : this is the first bit to send to signal the arrival of transmition.
+ - `Dest`    : this is the desired recipient hashed,the mac address of the adresse hashed into 4 bytes.
+ - `Emet`    : this is the desired sender hashed, the mac address of hashed into 4 bytes.
+ - `Lendata` : this is the length of the data hashed into 4 bytes.
+ - `data`    : this is the message.
+ 
+## Network card
+    
+the network card functions in two different parts independent of each other.
+```                                                     
+ the first part components
+                                                Part 1  |  Part 2
+                                                ________|_________
+-`Clock 1`  : the clock receive.                |       |        |
+-`data 1`   :the data receive.             CL1  |       |        | CL2
+-`data 4`   :the data given.             ------>|       |        |------>
+                                                |       |        |
+                                                |       |        |
+                                         Data 1 |       |        | Data 2
+ the second part components              ------>|       |        |------>
+                                                |       |        |
+-`Clock 2`  : the clock given.                  |       |        |
+-`data 2`   :the data given.             Data 4 |       |        | Data 3
+-`data 3`   :the data receive.           ------>|       |        |------>
+                                                |_______|________|
+                                                        |
+```
